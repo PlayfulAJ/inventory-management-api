@@ -78,6 +78,32 @@ def add_inventory_item():
     # Return the new item.
     return jsonify(new_item), 201
 
+# This route updates an inventory item's price or stock.
+@app.route("/inventory/<int:item_id>", methods=["PATCH"])
+def update_inventory_item(item_id):
+
+    # Get the JSON data from the request.
+    data = request.get_json()
+
+    # Loop through every inventory item.
+    for item in inventory:
+
+        # Find the matching ID.
+        if item["id"] == item_id:
+
+            # Update the price if it was provided.
+            if "price" in data:
+                item["price"] = data["price"]
+
+            # Update the stock if it was provided.
+            if "stock" in data:
+                item["stock"] = data["stock"]
+
+            # Return the updated item.
+            return jsonify(item), 200
+
+    # Return an error if the item doesn't exist.
+    return jsonify({"error": "Item not found"}), 404
 
 if __name__ == "__main__":
     app.run(debug=True)
