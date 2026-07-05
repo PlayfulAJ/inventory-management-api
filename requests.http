@@ -23,3 +23,6 @@ Content-Type: application/json
     "price": 400,
     "stock": 25
 }
+
+### Delete an inventory item
+DELETE http://127.0.0.1:5000/inventory/2
