@@ -1,5 +1,5 @@
-from flask import Flask, jsonify
-
+from flask import Flask, jsonify, request
+# request lets us receive JSON data sent by the client.
 app = Flask(__name__)
 
 # Simulated inventory database
@@ -45,6 +45,39 @@ def get_inventory_item(item_id):
 
     # this rreturns an error if the item does not exist.
     return jsonify({"error": "Item not found"}), 404
+
+# This route adds a new inventory item.
+@app.route("/inventory", methods=["POST"])
+def add_inventory_item():
+
+    # Get the JSON data from the request.
+    data = request.get_json()
+
+    # Check that all required fields are provided.
+    required_fields = ["name", "brand", "price", "stock"]
+
+    for field in required_fields:
+        if field not in data:
+            return jsonify({"error": f"{field} is required"}), 400
+
+    # Create a new ID.
+    new_id = len(inventory) + 1
+
+    # Create the new inventory item.
+    new_item = {
+        "id": new_id,
+        "name": data["name"],
+        "brand": data["brand"],
+        "price": data["price"],
+        "stock": data["stock"]
+    }
+
+    # Add it to the inventory list.
+    inventory.append(new_item)
+
+    # Return the new item.
+    return jsonify(new_item), 201
+
 
 if __name__ == "__main__":
     app.run(debug=True)

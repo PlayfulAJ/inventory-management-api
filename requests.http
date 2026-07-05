@@ -1,0 +1,16 @@
+### Get all inventory
+GET http://127.0.0.1:5000/inventory
+
+### Get one inventory item
+GET http://127.0.0.1:5000/inventory/1
+
+### Add a new inventory item
+POST http://127.0.0.1:5000/inventory
+Content-Type: application/json
+
+{
+    "name": "Orange Juice",
+    "brand": "Minute Maid",
+    "price": 250,
+    "stock": 18
+}
