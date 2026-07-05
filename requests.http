@@ -26,3 +26,6 @@ Content-Type: application/json
 
 ### Delete an inventory item
 DELETE http://127.0.0.1:5000/inventory/2
+
+### Search Product
+GET http://127.0.0.1:5000/search/737628064502

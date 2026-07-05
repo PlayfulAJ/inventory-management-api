@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+import requests # the requests import lets us send HTTP requests to external APIs.
 # request lets us receive JSON data sent by the client.
 app = Flask(__name__)
 
@@ -124,5 +125,40 @@ def delete_inventory_item(item_id):
     # Return an error if the item was not found.
     return jsonify({"error": "Item not found"}), 404
 
+# This route searches for a product using the OpenFoodFacts API barcode.
+@app.route("/search/<barcode>", methods=["GET"])
+def search_product(barcode):
+
+    # Build the OpenFoodFacts API URL.
+    url = f"https://world.openfoodfacts.org/api/v2/product/{barcode}.json"
+
+    # Send a request to the API.
+    response = requests.get(
+        url,
+        headers={"User-Agent": "InventoryManagementAPI/1.0"}
+    )
+
+    # Check if the request was successful.
+    if response.status_code != 200:
+        return jsonify({"error": "Could not connect to OpenFoodFacts"}), 500
+
+    # Convert the response into JSON.
+    data = response.json()
+
+    # Check if the product exists.
+    if data["status"] == 1:
+
+        # Get the product information.
+        product = data["product"]
+
+        # Return only the details we need.
+        return jsonify({
+            "name": product.get("product_name"),
+            "brand": product.get("brands"),
+            "ingredients": product.get("ingredients_text")
+        }), 200
+
+    # Return an error if the product is not found.
+    return jsonify({"error": "Product not found"}), 404
 if __name__ == "__main__":
     app.run(debug=True)
