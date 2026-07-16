@@ -56,3 +56,8 @@ def test_delete_inventory_item():
     response = client.delete("/inventory/2")
 
     assert response.status_code == 200
+
+# Test searching the OpenFoodFacts API.
+def test_search_product(): 
+    response = client.get("/search/737628064502") 
+    assert response.status_code == 200
