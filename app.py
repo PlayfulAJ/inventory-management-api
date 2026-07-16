@@ -3,7 +3,7 @@ import requests # the requests import lets us send HTTP requests to external API
 # request lets us receive JSON data sent by the client.
 app = Flask(__name__)
 
-# Simulated inventory database
+# Simulating a simple inventory database
 inventory = [
     {
         "id": 1,

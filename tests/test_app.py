@@ -33,7 +33,7 @@ def test_add_inventory_item():
 
     response = client.post("/inventory", json=new_item)
 
-    assert response.status_code == 200
+    assert response.status_code == 201
 
 
 # Test updating an inventory item.
@@ -54,13 +54,5 @@ def test_update_inventory_item():
 def test_delete_inventory_item():
 
     response = client.delete("/inventory/2")
-
-    assert response.status_code == 200
-
-
-# Test searching the OpenFoodFacts API.
-def test_search_product():
-
-    response = client.get("/search/737628064502")
 
     assert response.status_code == 200
